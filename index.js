@@ -2,6 +2,85 @@ const slides = document.querySelectorAll(".slides");
 const numSlides = document.querySelectorAll(".slides").length;
 const slidesArray = Array.from(slides);
 
+const pagDiv = document.querySelector(".pagination");
+
+slidesArray.forEach((slide, i) => {
+  const pagButton = document.createElement("button");
+  pagButton.setAttribute("id", i);
+  pagButton.setAttribute("class", "btn");
+  pagButton.innerHTML = "&FilledSmallSquare;";
+  pagDiv.appendChild(pagButton);
+});
+
+function nextByArrow() {
+  const activeSlide = slidesArray.find((slide) =>
+    slide.classList.contains("active")
+  );
+  const index = slidesArray.indexOf(activeSlide);
+
+  activeSlide.classList.add("prev");
+  activeSlide.classList.remove("active");
+  slidesArray.at(index - (numSlides - 1)).classList.remove("next");
+  slidesArray.at(index - (numSlides - 1)).classList.add("active");
+  slidesArray.at(index - 1).classList.remove("prev");
+  slidesArray.at(index - 3).classList.add("next");
+  navStyle();
+}
+
+function prevByArrow() {
+  const activeSlide = slidesArray.find((slide) =>
+    slide.classList.contains("active")
+  );
+  const index = slidesArray.indexOf(activeSlide);
+  const nextSlide = activeSlide.nextElementSibling;
+
+  activeSlide.classList.remove("active");
+  activeSlide.classList.add("next");
+  nextSlide.classList.remove("next");
+  slidesArray.at(index - 1).classList.remove("prev");
+  slidesArray.at(index - 1).classList.add("active");
+  slidesArray.at(index - 2).classList.add("prev");
+  navStyle();
+}
+
+const btns = document.querySelectorAll(".btn");
+const btnsArray = Array.from(btns);
+
+function handleNavigation(id) {
+  const activeButton = document.getElementById(`${id}`);
+
+  activeButton.addEventListener("click", function () {
+    const activeSlide = Array.from(document.querySelectorAll(".slides")).find(
+      (slide) => slide.classList.contains("active")
+    );
+    const index = slidesArray.indexOf(activeSlide);
+    const deviation = index - id;
+    for (let i = 0; i < Math.abs(deviation); i++) {
+      if (deviation > 0) prevByArrow();
+      if (deviation < 0) nextByArrow();
+    }
+
+    navStyle();
+  });
+}
+
+document.querySelector(".right-arrow").addEventListener("click", nextByArrow);
+document.querySelector(".left-arrow").addEventListener("click", prevByArrow);
+
+btnsArray.forEach((btn) => handleNavigation(btn.id));
+
+function navStyle() {
+  const activeSlide = Array.from(document.querySelectorAll(".slides")).find(
+    (slide) => slide.classList.contains("active")
+  );
+  const index = slidesArray.indexOf(activeSlide);
+  btnsArray.forEach((btn) =>
+    +btn.id === index
+      ? document.getElementById(`${btn.id}`).classList.add("activeBtn")
+      : document.getElementById(`${btn.id}`).classList.remove("activeBtn")
+  );
+}
+
 // function nextByArrow() {
 //   const activeSlide = slidesArray.find((slide) =>
 //     slide.classList.contains("active")
@@ -34,34 +113,3 @@ const slidesArray = Array.from(slides);
 //     slidesArray[1].classList.add("next");
 //   }
 // }
-
-function nextByArrow() {
-  const activeSlide = slidesArray.find((slide) =>
-    slide.classList.contains("active")
-  );
-  const index = slidesArray.indexOf(activeSlide);
-  activeSlide.classList.add("prev");
-  activeSlide.classList.remove("active");
-  slidesArray.at(index - (numSlides - 1)).classList.remove("next");
-  slidesArray.at(index - (numSlides - 1)).classList.add("active");
-  slidesArray.at(index - 1).classList.remove("prev");
-  slidesArray.at(index - 3).classList.add("next");
-}
-
-function prevByArrow() {
-  const activeSlide = slidesArray.find((slide) =>
-    slide.classList.contains("active")
-  );
-  const index = slidesArray.indexOf(activeSlide);
-  const nextSlide = activeSlide.nextElementSibling;
-
-  activeSlide.classList.remove("active");
-  activeSlide.classList.add("next");
-  nextSlide.classList.remove("next");
-  slidesArray.at(index - 1).classList.remove("prev");
-  slidesArray.at(index - 1).classList.add("active");
-  slidesArray.at(index - 2).classList.add("prev");
-}
-
-document.querySelector(".right-arrow").addEventListener("click", nextByArrow);
-document.querySelector(".left-arrow").addEventListener("click", prevByArrow);
