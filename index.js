@@ -4,7 +4,7 @@ const slidesArray = Array.from(slides);
 
 const pagDiv = document.querySelector(".pagination");
 
-slidesArray.forEach((slide, i) => {
+slidesArray.forEach((_, i) => {
   const pagButton = document.createElement("button");
   pagButton.setAttribute("id", i);
   pagButton.setAttribute("class", "btn");
@@ -25,6 +25,7 @@ function nextByArrow() {
   slidesArray.at(index - 1).classList.remove("prev");
   slidesArray.at(index - 3).classList.add("next");
   navStyle();
+  autoPlay();
 }
 
 function prevByArrow() {
@@ -41,6 +42,7 @@ function prevByArrow() {
   slidesArray.at(index - 1).classList.add("active");
   slidesArray.at(index - 2).classList.add("prev");
   navStyle();
+  autoPlay();
 }
 
 const btns = document.querySelectorAll(".btn");
@@ -61,6 +63,8 @@ function handleNavigation(id) {
     }
 
     navStyle();
+
+    autoPlay();
   });
 }
 
@@ -80,6 +84,23 @@ function navStyle() {
       : document.getElementById(`${btn.id}`).classList.remove("activeBtn")
   );
 }
+
+let intervalId = setInterval(() => nextByArrow(), 5000);
+
+function autoPlay() {
+  clearInterval(intervalId);
+  intervalId = setInterval(() => nextByArrow(), 5000);
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight") {
+    nextByArrow();
+    autoPlay();
+  } else if (e.key === "ArrowLeft") {
+    prevByArrow();
+    autoPlay();
+  }
+});
 
 // function nextByArrow() {
 //   const activeSlide = slidesArray.find((slide) =>
