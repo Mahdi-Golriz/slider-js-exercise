@@ -12,7 +12,7 @@ html {
 }
 
 .container {
-  width: 1366px;
+  width: 100vw;
   height: 50rem;
   overflow: hidden;
   /* display: flex; */
@@ -130,4 +130,29 @@ html {
 
 .activeBtn {
   color: rgb(223, 210, 210);
+}
+
+@media screen and (max-width: 640px) {
+  .slides div {
+    width: 50%;
+    height: auto;
+    text-align: center;
+    padding: 2rem;
+    margin: 30rem auto;
+  }
+
+  .slides h3 {
+    color: aliceblue;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 1.5rem;
+  }
+
+  .slides p {
+    font-family: "Josefin Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    color: aliceblue;
+    font-size: 1.2rem;
+  }
 }
